@@ -1,18 +1,6 @@
 var checkWord = require('check-word'),
 	words = checkWord('en');
-const fs = require('fs');
-
-var dictionary = [];
-
-fs.readFileSync('./words', 'utf8', (err, data) => {
-	if (err) {
-		console.log('error reading file:', err);
-	} else {
-		console.log('read success!');
-		dictionary = data.toLowerCase().split('\n');
-		// console.log(arr);
-	}
-});
+// const phoneDigitsToLetters = require('./phoneDigitsToLetters.js');
 
 var phoneDigitsToLetters = {
 	0: '0',
@@ -86,6 +74,6 @@ var vanityNumbers = [];
 
 subStrings.forEach((i) => vanityNumbers.push(generateWords(i)));
 
-console.log('Vanity numbers: ', vanityNumbers.flat());
+console.log('Vanity numbers: ', vanityNumbers.flat().slice(0, 5));
 
 // console.log('numbers: ', generateWords(testNumber));
