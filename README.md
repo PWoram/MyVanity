@@ -9,7 +9,7 @@ To test the contact flow, call 1-213-776-4759.
 
 # Implementation
 
-I choose to implement this application via two different lambda functions invoked in the same Amazon Connect contact flow:
+I chose to implement this application via two different lambda functions invoked in the same Amazon Connect contact flow:
 
 _lambdaFunc/index.js_
 
@@ -31,7 +31,7 @@ returnVanityNumbers is a standalone lambda function which, when invoked in an Am
 
 returnVanityNumbers incorporates basic error handling to ensure that an error in either the database querying or response generation can be identified if one occurs.
 
-_contact flow___
+_contact flow_
 
 I incorporated the above two lambda functions into the following Amazon Connect contact flow:
 
@@ -45,13 +45,14 @@ _Reasons for my implementation_
 
 Given the time constraints, I tried to implement my application in a straightforward manner. I decided to separate my two primary concerns (writing data to the database and reading data from the database) into separate lambda functions in order to make testing easier. I tested my lambda functions within the AWS console, but I have included the JSON code for the test event in this repo. In order to test my returnVanityNumbers lambda, I simply prepopulated my database with sample records. 
 
-The greatest difficulty I faced in implementing this application was aggregating necessary information across documentation and tutorials online in order to understand how to create this particular contact flow in Amazon Connect using Lambda and DynamoDB. For instance, I was able to rely on AWS documentation to learn how to create an Amazon Connect contact flow that used a Lambda to read from a DynamoDB database but this same resource did not cover how to write to the DynamoDB database. To learn how to implement the write functionality, I turned to a third-party resource which in turn led me to DynamoDB API reference on Amazon SDK. In this way, I gradually pieced together an understanding of how to implement different pieces of the required functionality. 
+The greatest difficulty I faced in implementing this application was aggregating necessary information across documentation and tutorials online in order to understand how to create this particular contact flow in Amazon Connect using Lambda and DynamoDB. For instance, I was able to rely on AWS documentation to learn how to create an Amazon Connect contact flow that used a Lambda to read from a DynamoDB database, but this same resource did not cover how to write to the DynamoDB database. To learn how to implement the write functionality, I turned to a third-party resource which in turn led me to DynamoDB API reference on Amazon SDK. In this way, I gradually pieced together an understanding of how to implement different pieces of the required functionality. 
 
 _Improvements_
 
 With more time, I would make the following improvements:
 
-  1) I would clean up index.js by separating the functions into their own files to increase readability and separation of logic.
+  1) I would clean up index.js by separating the functions into their own files to increase readability and separation of logic. I consider this a necessity for production-quality code. 
   2) I would improve the formatting of the outputted vanity phone words so that it includes the first part of the number as well. Currently, my Amazon Connect instance will repeat to the user only the vanity words themselves (e.g., "baby" instead of "+1-214-555-baby"). 
   3) I would increase the number of digits examined to generate phone words. My application currently looks at only the last four digits of a phone number to generate phone words. For example, if a user were to call my Amazon Connect instance using the phone number +12142337, its vanity words would include "roof" but not "dfw-roof." Implementing this improvement would possibly require me to further optimize my code, because the more digits of a phone number I consider, the greater the number of substrings I must pass to the generateWords. 
   4) I would refactor my generateWords function to be able to identify multiple vanity words within a single number. For instance, it should be able to recognize that +1-934-283-7437 can make "1-We have pies." Implementing this would demand careful attention to the increased burden on performance. 
+  5) I would incorporate, if possible, automated end-to-end testing.
