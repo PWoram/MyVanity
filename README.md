@@ -5,7 +5,7 @@ MyVanity is an application designed to run in Amazon Connect which enables the c
   2) stores those vanity phone words in an Amazon DynamoDB table,
   3) repeats those vanity phone words to the caller live.
 
-To test the contact flow, call 1-213-776-4759.
+To test the contact flow, call 1-213-776-4759 (currently inactive :(...)
 
 # Implementation
 
