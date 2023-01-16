@@ -5,7 +5,7 @@ MyVanity is an application designed to run in Amazon Connect which enables the c
   2) stores those vanity phone words in an Amazon DynamoDB table,
   3) repeats those vanity phone words to the caller live.
 
-To test the contact flow, call 1-213-776-4759 (currently inactive :(...)
+To test the contact flow, call 1-213-776-4759 (depending on my current AWS Free Tier usage, this may or may not return words). 
 
 # Implementation
 
@@ -53,7 +53,7 @@ With more time, I would make the following improvements:
 
   1) I would clean up index.js by separating the functions into their own files to increase readability and separation of logic. I consider this a necessity for production-quality code. 
   2) I would improve the formatting of the outputted vanity phone words so that it includes the first part of the number as well. Currently, my Amazon Connect instance will repeat to the user only the vanity words themselves (e.g., "baby" instead of "+1-214-555-baby"). 
-  3) I would increase the number of digits examined to generate phone words. My application currently looks at only the last four digits of a phone number to generate phone words. For example, if a user were to call my Amazon Connect instance using the phone number +12142337, its vanity words would include "roof" but not "dfw-roof." Implementing this improvement would possibly require me to further optimize my code, because the more digits of a phone number I consider, the greater the number of substrings I must pass to the generateWords. 
+  3) I would increase the number of digits examined to generate phone words. My application currently looks at only the last four digits of a phone number. For example, if a user were to call my Amazon Connect instance using the phone number +1-214-846-7663, its vanity words would include "roof" but not "tin-roof." Implementing this improvement would require further optimization of the code, because the more digits of a phone number under consideration, the greater the number of substrings I must pass to the generateWords. 
   4) I would refactor my generateWords function to be able to identify multiple vanity words within a single number. For instance, it should be able to recognize that +1-934-283-7437 can make "1-We have pies." Implementing this would demand careful attention to the increased burden on performance. 
   5) I would incorporate, if possible, automated end-to-end testing.
   6) I would improve the logic for how vanity words are added to the database. In my implementation, whenever I had a phone number that yielded fewer than five vanity words, I encountered an error when referring to items in the array that were undefined (e.g., storing results[4] in the DynamoDB would throw an error if the results array had fewer than five elements). My current fix for this problem entails adding additional elements--with a value of "None"--to the array. With more time, I would ensure that only valid vanity words are added to the database table.
